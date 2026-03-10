@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ダッシュボード | 仙人Account</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 min-h-screen p-6">
+    <div class="max-w-4xl mx-auto">
+        <header class="flex justify-between items-center mb-12">
+            <h1 class="text-2xl font-black text-blue-600">仙人Account</h1>
+            <div class="flex gap-4">
+                <a href="/admin.html" class="text-sm font-bold bg-white px-4 py-2 rounded-xl shadow-sm">開発者パネル</a>
+                <a href="/api/auth/logout" class="text-sm font-bold text-red-500 bg-white px-4 py-2 rounded-xl shadow-sm">ログアウト</a>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-white p-8 rounded-[2.5rem] shadow-sm">
+                <h2 class="text-xl font-black mb-6 flex items-center gap-2"><span class="w-2 h-6 bg-blue-600 rounded-full"></span> ユーザー情報</h2>
+                <div class="space-y-4">
+                    <div>
+                        <p class="text-xs font-bold text-slate-400 uppercase">仙人ID</p>
+                        <p id="dispId" class="text-xl font-bold text-slate-800"></p>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-slate-400 uppercase">表示名</p>
+                        <p id="dispName" class="text-xl font-bold text-slate-800"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-8 rounded-[2.5rem] shadow-sm">
+                <h2 class="text-xl font-black mb-6 flex items-center gap-2"><span class="w-2 h-6 bg-blue-600 rounded-full"></span> API連携キー</h2>
+                <p class="text-xs text-slate-400 mb-4">このキーを他アプリのAuthorizationヘッダーに使用します。</p>
+                <div id="apiKey" class="bg-slate-50 p-4 rounded-2xl mb-4 font-mono text-sm break-all text-blue-600 border border-slate-100">キーを取得中...</div>
+                <div class="flex gap-2">
+                    <button onclick="copyKey()" class="flex-1 bg-slate-800 text-white py-3 rounded-2xl font-bold text-sm">コピー</button>
+                    <button onclick="regenKey()" class="flex-1 border-2 border-slate-100 text-slate-400 py-3 rounded-2xl font-bold text-sm">再発行</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function init() {
+            const res = await fetch('/api/user/me');
+            if(res.status === 401) window.location.href = '/';
+            const user = await res.json();
+            document.getElementById('dispId').innerText = user.userId;
+            document.getElementById('dispName').innerText = user.username;
+            document.getElementById('apiKey').innerText = user.apiKey;
+        }
+        async function regenKey() {
+            if(!confirm('再発行しますか？')) return;
+            const res = await fetch('/api/user/regen-key', {method:'POST'});
+            const data = await res.json();
+            document.getElementById('apiKey').innerText = data.apiKey;
+        }
+        function copyKey() {
+            navigator.clipboard.writeText(document.getElementById('apiKey').innerText);
+            alert('コピーしました');
+        }
+        init();
+    </script>
+</body>
+</html>
