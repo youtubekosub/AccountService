@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>新規登録 | 仙人Account</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 flex items-center justify-center min-h-screen">
+    <div class="max-w-md w-full p-10 bg-white shadow-2xl rounded-[3rem]">
+        <h1 class="text-3xl font-black text-slate-800 mb-6 text-center">アカウント作成</h1>
+        <form action="/api/auth/register" method="POST" class="space-y-4">
+            <div>
+                <label class="text-xs font-bold text-slate-400 ml-2 uppercase">Your Unique ID</label>
+                <input type="text" name="userId" placeholder="例: sennin_tarou" required class="w-full px-6 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600 outline-none mt-1">
+            </div>
+            <div>
+                <label class="text-xs font-bold text-slate-400 ml-2 uppercase">Display Name</label>
+                <input type="text" name="username" placeholder="表示名" required class="w-full px-6 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600 outline-none mt-1">
+            </div>
+            <div>
+                <label class="text-xs font-bold text-slate-400 ml-2 uppercase">Password</label>
+                <input type="password" name="password" placeholder="••••••••" required class="w-full px-6 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600 outline-none mt-1">
+            </div>
+            <button type="submit" class="w-full py-4 bg-slate-800 text-white rounded-2xl font-black hover:bg-slate-900 transition-all mt-4">仙人になる</button>
+        </form>
+        <div class="text-center mt-6">
+            <a href="/" class="text-sm text-slate-400 hover:text-blue-600 transition-colors">ログインに戻る</a>
+        </div>
+    </div>
+</body>
+</html>
